@@ -5,7 +5,4 @@ description: The Flump runtime for the StageXL library.
 homepage: http://www.stagexl.org
 dependencies:
   browser: any
-  stagexl:
-    git:
-      ref: master
-      url: https://github.com/bp74/StageXL.git
+  stagexl: any
