@@ -30,7 +30,7 @@ class FlumpMovie extends DisplayObject implements Animatable {
     _time += time;
 
     var frameTime = _time % _duration;
-    _frame = min((_frames * frameTime / _duration).toInt(), _frames - 1);
+    _frame = min(_frames * frameTime ~/ _duration, _frames - 1);
 
     for(var flumpMovieLayer in _flumpMovieLayers) {
       flumpMovieLayer.advanceTime(time);
