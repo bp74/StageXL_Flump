@@ -14,7 +14,7 @@ class FlumpLibrary {
 
     HttpRequest.getString(url).then((flumpJson) {
 
-      var data = json.parse(flumpJson) as Map;
+      var data = JSON.decode(flumpJson) as Map;
       var textureGroupLoaders = new List();
       var flumpLibrary = new FlumpLibrary();
 

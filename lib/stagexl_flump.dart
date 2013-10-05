@@ -1,8 +1,8 @@
 library stagexl_flump;
 
 import 'dart:async';
-import 'dart:math';
-import 'dart:json' as json;
+import 'dart:convert';
+import 'dart:math' hide Point, Rectangle;
 import 'dart:html' show ImageElement, HttpRequest;
 import 'package:stagexl/stagexl.dart';
 
