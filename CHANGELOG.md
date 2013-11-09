@@ -3,6 +3,9 @@
 This file contains highlights of what changes on each version of the StageXL_Flump
 package. This file is normally updated whenever we push a new version to pub.
 
+#### Pub version 0.2.0
+  * Set version of dependencies according to Dart 1.0 release.
+
 #### Pub version 0.1.1
   * Some minor changes to align with the latest Dart changes.
 
