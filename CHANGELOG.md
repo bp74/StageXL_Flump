@@ -3,6 +3,10 @@
 This file contains highlights of what changes on each version of the StageXL_Flump
 package. This file is normally updated whenever we push a new version to pub.
 
+#### Pub version 0.3.0
+  * Support for WebGL renderer in StageXL
+  * Performance improvements
+  
 #### Pub version 0.2.0
   * Set version of dependencies according to Dart 1.0 release.
 

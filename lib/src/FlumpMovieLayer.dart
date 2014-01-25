@@ -1,34 +1,40 @@
 part of stagexl_flump;
 
-class _FlumpMovieLayer extends Warp implements Animatable {
+class _FlumpMovieLayer extends DisplayObject implements Animatable {
 
   final FlumpLibrary flumpLibrary;
   final _FlumpLayerData flumpLayerData;
-  final Map<String, BitmapDrawable> symbols = new Map<String, BitmapDrawable>();
-  BitmapDrawable symbol;
+
+  BitmapDrawable _symbol;
+  Map<String, BitmapDrawable> _symbols = new Map<String, BitmapDrawable>();
+  Matrix _transformationMatrix = new Matrix.fromIdentity();
 
   _FlumpMovieLayer(FlumpLibrary flumpLibrary, _FlumpLayerData flumpLayerData) :
     this.flumpLibrary = flumpLibrary,
     this.flumpLayerData = flumpLayerData {
 
     for(var keyframe in flumpLayerData.flumpKeyframeDatas) {
-      if (keyframe.ref != null && symbols.containsKey(keyframe.ref) == false) {
-        symbols[keyframe.ref] = flumpLibrary._createSymbol(keyframe.ref);
+      if (keyframe.ref != null && _symbols.containsKey(keyframe.ref) == false) {
+        _symbols[keyframe.ref] = flumpLibrary._createSymbol(keyframe.ref);
       }
     }
 
     setFrame(0);
   }
 
+  Matrix get transformationMatrix => _transformationMatrix;
+
   bool advanceTime(num time) {
-    if (symbol is Animatable) {
-      var animatable = symbol as Animatable;
+    if (_symbol is Animatable) {
+      var animatable = _symbol as Animatable;
       animatable.advanceTime(time);
     }
   }
 
   void setFrame(int frame) {
+
     var keyframe = flumpLayerData.getKeyframeForFrame(frame);
+    if (keyframe is! _FlumpKeyframeData) return; // dart2js_hint
 
     num x = keyframe.x, y = keyframe.y;
     num scaleX = keyframe.scaleX, scaleY = keyframe.scaleY;
@@ -37,9 +43,10 @@ class _FlumpMovieLayer extends Warp implements Animatable {
     num alpha = keyframe.alpha;
 
     if (keyframe.index != frame && keyframe.tweened) {
-      var nextKeyframe = flumpLayerData.getKeyframeAfter(keyframe);
 
-      if (nextKeyframe != null) {
+      var nextKeyframe = flumpLayerData.getKeyframeAfter(keyframe);
+      if (nextKeyframe is _FlumpKeyframeData) {
+
         var interped = (frame - keyframe.index) / keyframe.duration;
         var ease = keyframe.ease;
 
@@ -80,16 +87,15 @@ class _FlumpMovieLayer extends Warp implements Animatable {
     num tx =  x - (pivotX * a + pivotY * c);
     num ty =  y - (pivotX * b + pivotY * d);
 
-    this.matrix.setTo(a, b, c, d, tx, ty);
+    _transformationMatrix.setTo(a, b, c, d, tx, ty);
+
     this.alpha = alpha;
     this.visible = keyframe.visible;
 
-    symbol = (keyframe.ref != null) ? symbols[keyframe.ref] : null;
+    _symbol = (keyframe.ref != null) ? _symbols[keyframe.ref] : null;
   }
 
   void render(RenderState renderState) {
-    if (symbol != null) {
-      symbol.render(renderState);
-    }
+    if (_symbol != null) _symbol.render(renderState);
   }
 }

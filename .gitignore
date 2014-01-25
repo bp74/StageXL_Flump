@@ -5,6 +5,7 @@
 *.dart.js
 *.dart.js.map
 *.dart.js.deps
+*.precompiled.js
 pubspec.lock
 packages/
 

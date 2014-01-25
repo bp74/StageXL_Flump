@@ -4,23 +4,15 @@ class _FlumpMovieData {
 
   final String id;
   final FlumpLibrary flumpLibrary;
-  final List<_FlumpLayerData> flumpLayerDatas = new List<_FlumpLayerData>();
+  final List<_FlumpLayerData> flumpLayerDatas;
 
-  _FlumpMovieData(Map json, FlumpLibrary flumpLibrary) :
-    flumpLibrary = flumpLibrary,
-    id = json["id"] {
+  int frames = 0;
 
-    for(var layer in json["layers"]) {
-      var flumpLayerData = new _FlumpLayerData(layer);
-      this.flumpLayerDatas.add(flumpLayerData);
-    }
-  }
+  _FlumpMovieData(FlumpLibrary flumpLibrary, Map json) :
+    this.flumpLibrary = flumpLibrary,
+    this.id = json["id"],
+    this.flumpLayerDatas = json["layers"].map((layer) => new _FlumpLayerData(layer)).toList() {
 
-  int get frames {
-    var frames = 0;
-    for(var flumpLayerData in flumpLayerDatas)
-      frames = max(frames, flumpLayerData.frames);
-
-    return frames;
+    this.frames = flumpLayerDatas.fold(0, (f, data) => max(f, data.frames));
   }
 }

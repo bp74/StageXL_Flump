@@ -2,71 +2,63 @@ part of stagexl_flump;
 
 class FlumpLibrary {
 
-  String _url;
-  String _md5;
-  int _frameRate;
   final List<_FlumpMovieData> _movieDatas = new List<_FlumpMovieData>();
   final List<_FlumpTextureGroup> _textureGroups = new List<_FlumpTextureGroup>();
 
+  String _url;
+  String _md5;
+  int _frameRate;
+
   static Future<FlumpLibrary> load(String url) {
 
-    var completer = new Completer<FlumpLibrary>();
+    return HttpRequest.getString(url).then(JSON.decode).then((jsonFlump) {
 
-    HttpRequest.getString(url).then((flumpJson) {
-
-      var data = JSON.decode(flumpJson) as Map;
       var textureGroupLoaders = new List();
       var flumpLibrary = new FlumpLibrary();
 
-      flumpLibrary._url = url;
-      flumpLibrary._md5 = data["md5"];
-      flumpLibrary._frameRate = data["frameRate"].toInt();
+      flumpLibrary._url = _ensureString(url);
+      flumpLibrary._md5 = _ensureString(jsonFlump["md5"]);
+      flumpLibrary._frameRate = _ensureInt(jsonFlump["frameRate"]);
 
-      for(var movieJson in data["movies"] as List) {
-        var flumpMovieData = new _FlumpMovieData(movieJson, flumpLibrary);
+      for(var jsonMovie in jsonFlump["movies"] as List) {
+        var flumpMovieData = new _FlumpMovieData(flumpLibrary, jsonMovie);
         flumpLibrary._movieDatas.add(flumpMovieData);
       }
 
-      for(var textureGroupJson in data["textureGroups"] as List) {
-        var flumpTextureGroup = new _FlumpTextureGroup(textureGroupJson, flumpLibrary);
-        flumpLibrary._textureGroups.add(flumpTextureGroup);
-        textureGroupLoaders.add(flumpTextureGroup.completer.future);
+      for(var jsonTextureGroup in jsonFlump["textureGroups"] as List) {
+        var future = _FlumpTextureGroup.load(flumpLibrary, jsonTextureGroup);
+        textureGroupLoaders.add(future);
       }
 
-      Future.wait(textureGroupLoaders).then((value) {
-        completer.complete(flumpLibrary);
-      }).catchError((error) {
-        completer.completeError(new StateError("Failed to load image."));
+      return Future.wait(textureGroupLoaders).then((textureGroups) {
+        flumpLibrary._textureGroups.addAll(textureGroups);
+        return flumpLibrary;
       });
-
-    }).catchError((error) {
-
-      completer.completeError(new StateError("Failed to load json file."));
-
     });
-
-    return completer.future;
   }
 
+  //-----------------------------------------------------------------------------------------------
+
   _FlumpMovieData _getFlumpMovieData(String name) {
-    for(var movie in _movieDatas)
-      if (movie.id == name)
-        return movie;
+
+    for(int i = 0; i < _movieDatas.length; i++) {
+      var movieData = _movieDatas[i];
+      if (movieData.id == name) return movieData;
+    }
 
     throw new ArgumentError("The movie '$name' is not available.");
   }
 
   BitmapDrawable _createSymbol(String name) {
-    for(var textureGroup in _textureGroups) {
-      if (textureGroup.flumpTextures.containsKey(name)) {
-        return textureGroup.flumpTextures[name];
-      }
+
+    for(int i = 0; i < _textureGroups.length; i++) {
+      var flumpTextures = _textureGroups[i].flumpTextures;
+      if (flumpTextures.containsKey(name)) return flumpTextures[name];
     }
 
-    for(var movieData in _movieDatas) {
-      if (movieData.id == name) {
-        return new FlumpMovie(this, name);
-      }
+    for(int i = 0; i < _movieDatas.length; i++) {
+      var movieData = _movieDatas[i];
+      if (movieData.id == name) return new FlumpMovie(this, name);
     }
 
     throw new ArgumentError("The symbol '$name' is not available.");

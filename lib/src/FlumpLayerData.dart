@@ -4,34 +4,36 @@ class _FlumpLayerData {
 
   final String name;
   final bool flipbook;
-  final List<_FlumpKeyframeData> flumpKeyframeDatas = new List<_FlumpKeyframeData>();
+  final List<_FlumpKeyframeData> flumpKeyframeDatas;
+
+  int frames;
 
   _FlumpLayerData(Map json) :
-    this.name = json["name"],
-    this.flipbook = json.containsKey("flipbook") ? json["flipbook"] : false {
+    this.name = _ensureString(json["name"]),
+    this.flipbook = json.containsKey("flipbook") ? _ensureBool(json["flipbook"]) : false,
+    this.flumpKeyframeDatas = json["keyframes"].map((keyframe) =>
+        new _FlumpKeyframeData(keyframe)).toList() {
 
-    for(var keyframe in json["keyframes"]) {
-      var flumpKeyframeData = new _FlumpKeyframeData(keyframe);
-      this.flumpKeyframeDatas.add(flumpKeyframeData);
-    }
+    this.frames = flumpKeyframeDatas.last.index + flumpKeyframeDatas.last.duration;
   }
 
-  int get frames {
-    var flumpKeyframeData = flumpKeyframeDatas[flumpKeyframeDatas.length - 1];
-    return flumpKeyframeData.index + flumpKeyframeData.duration;
-  }
+  //-----------------------------------------------------------------------------------------------
 
   _FlumpKeyframeData getKeyframeForFrame(int frame) {
-    var i  = 1;
-    while(i < flumpKeyframeDatas.length && flumpKeyframeDatas[i].index <= frame) i++;
-    return flumpKeyframeDatas[i - 1];
+    for(int i = 1; i < flumpKeyframeDatas.length; i++) {
+      if (flumpKeyframeDatas[i].index > frame) {
+        return flumpKeyframeDatas[i - 1];
+      }
+    }
+    return flumpKeyframeDatas.last;
   }
 
   _FlumpKeyframeData getKeyframeAfter(_FlumpKeyframeData flumpKeyframeData) {
-    for(int i = 0; i < flumpKeyframeDatas.length - 1; i++)
-      if (identical(flumpKeyframeDatas[i], flumpKeyframeData))
+    for(int i = 0; i < flumpKeyframeDatas.length - 1; i++) {
+      if (identical(flumpKeyframeDatas[i], flumpKeyframeData)) {
         return flumpKeyframeDatas[i + 1];
-
+      }
+    }
     return null;
   }
 }

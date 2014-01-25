@@ -2,13 +2,18 @@ part of stagexl_flump;
 
 class _FlumpTexture implements BitmapDrawable {
 
-  num x, y, width, height;
-  num originX, originY;
-  ImageElement imageElement;
+  final RenderTextureQuad renderTextureQuad;
+  final num originX;
+  final num originY;
 
-  _FlumpTexture(this.x, this.y, this.width, this.height, this.originX, this.originY, this.imageElement);
+  _FlumpTexture(RenderTexture renderTexture, Map json) :
+    this.originX = _ensureNum(json["origin"][0]),
+    this.originY = _ensureNum(json["origin"][1]),
+    this.renderTextureQuad = new RenderTextureQuad(renderTexture, 0, 0, 0,
+        _ensureInt(json["rect"][0]), _ensureInt(json["rect"][1]),
+        _ensureInt(json["rect"][2]), _ensureInt(json["rect"][3]));
 
   void render(RenderState renderState) {
-    renderState.context.drawImageScaledFromSource(imageElement, x, y, width, height, 0, 0, width, height);
+    renderState.renderQuad(this.renderTextureQuad);
   }
 }
