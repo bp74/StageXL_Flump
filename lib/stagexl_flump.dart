@@ -9,15 +9,15 @@ import 'package:stagexl/stagexl.dart';
 // Flump converts Flash keyframe animations into texture atlases and JSON.
 // http://threerings.github.com/flump/
 
-part 'src/FlumpLibrary.dart';
-part 'src/FlumpMovie.dart';
-part 'src/FlumpMovieData.dart';
-part 'src/FlumpMovieLayer.dart';
-part 'src/FlumpTexture.dart';
-part 'src/FlumpTextureGroup.dart';
-part 'src/FlumpTextureGroupAtlas.dart';
-part 'src/FlumpKeyframeData.dart';
-part 'src/FlumpLayerData.dart';
+part 'src/flump_library.dart';
+part 'src/flump_movie.dart';
+part 'src/flump_movie_data.dart';
+part 'src/flump_movie_layer.dart';
+part 'src/flump_texture.dart';
+part 'src/flump_texture_group.dart';
+part 'src/flump_texture_group_atlas.dart';
+part 'src/flump_keyframe_data.dart';
+part 'src/flump_layer_data.dart';
 
 
 bool _ensureBool(bool value) {
