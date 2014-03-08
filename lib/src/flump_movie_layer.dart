@@ -27,7 +27,9 @@ class _FlumpMovieLayer extends DisplayObject implements Animatable {
   bool advanceTime(num time) {
     if (_symbol is Animatable) {
       var animatable = _symbol as Animatable;
-      animatable.advanceTime(time);
+      return animatable.advanceTime(time);
+    } else {
+      return false;
     }
   }
 
