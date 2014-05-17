@@ -19,10 +19,8 @@ class _FlumpTextureGroupAtlas {
     var path = match.group(1);
     var url = (path == null) ? file : "$path$file";
 
-    var autoHiDpi = BitmapData.defaultLoadOptions.autoHiDpi;
-    var webpAvailable = BitmapData.defaultLoadOptions.webp;
-
-    return RenderTexture.load(url, autoHiDpi, webpAvailable).then((renderTexture) {
+    return BitmapData.load(url).then((bitmapData) {
+      var renderTexture = bitmapData.renderTexture;
       return new _FlumpTextureGroupAtlas(renderTexture, json);
     });
   }
