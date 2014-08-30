@@ -43,7 +43,7 @@ class FlumpMovie extends DisplayObject implements Animatable {
   void render(RenderState renderState) {
     for(var flumpMovieLayer in _flumpMovieLayers) {
       if (flumpMovieLayer.visible) {
-        renderState.renderDisplayObject(flumpMovieLayer);
+        renderState.renderObject(flumpMovieLayer);
       }
     }
   }
