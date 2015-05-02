@@ -1,41 +1,48 @@
-library example01;
-
+import 'dart:async';
 import 'dart:html' as html;
 import 'package:stagexl/stagexl.dart';
 import 'package:stagexl_flump/stagexl_flump.dart';
 
-void main() {
+Future main() async {
 
-  var stage = new Stage(html.querySelector('#stage'), webGL: true);
+  // configure StageXL default options
+
+  StageXL.bitmapDataLoadOptions.webp = true;
+
+  // init Stage and RenderLoop
+
+  var canvas = html.querySelector('#stage');
+  var stage = new Stage(canvas);
   var renderLoop = new RenderLoop();
   renderLoop.addStage(stage);
 
-  FlumpLibrary.load('images/flumpLibrary.json').then((flumpLibrary) {
+  // load the FlumpLibrary
 
-    var idle = new FlumpMovie(flumpLibrary, 'idle');
-    idle.x = 150;
-    idle.y = 250;
-    stage.addChild(idle);
-    stage.juggler.add(idle);
+  var flumpLibrary = await FlumpLibrary.load('images/flumpLibrary.json');
 
-    var walk = new FlumpMovie(flumpLibrary, 'walk');
-    walk.x = 400;
-    walk.y = 250;
-    stage.addChild(walk);
-    stage.juggler.add(walk);
+  // create FlumpMovies from the FlumpLibrary
 
-    var attack = new FlumpMovie(flumpLibrary, 'attack');
-    attack.x = 650;
-    attack.y = 250;
-    stage.addChild(attack);
-    stage.juggler.add(attack);
+  var idle = new FlumpMovie(flumpLibrary, 'idle');
+  idle.x = 150;
+  idle.y = 250;
+  stage.addChild(idle);
+  stage.juggler.add(idle);
 
-    var defeat = new FlumpMovie(flumpLibrary, 'defeat');
-    defeat.x = 400;
-    defeat.y = 550;
-    stage.addChild(defeat);
-    stage.juggler.add(defeat);
-  });
+  var walk = new FlumpMovie(flumpLibrary, 'walk');
+  walk.x = 400;
+  walk.y = 250;
+  stage.addChild(walk);
+  stage.juggler.add(walk);
 
+  var attack = new FlumpMovie(flumpLibrary, 'attack');
+  attack.x = 650;
+  attack.y = 250;
+  stage.addChild(attack);
+  stage.juggler.add(attack);
+
+  var defeat = new FlumpMovie(flumpLibrary, 'defeat');
+  defeat.x = 400;
+  defeat.y = 550;
+  stage.addChild(defeat);
+  stage.juggler.add(defeat);
 }
-
