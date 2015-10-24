@@ -28,6 +28,6 @@ class _FlumpTexture implements BitmapDrawable {
   RenderTextureQuad get renderTextureQuad => _renderTextureQuad;
 
   void render(RenderState renderState) {
-    renderState.renderQuad(this.renderTextureQuad);
+    renderState.renderTextureQuad(this.renderTextureQuad);
   }
 }
