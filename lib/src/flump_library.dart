@@ -9,35 +9,39 @@ class FlumpLibrary {
   String _md5;
   int _frameRate;
 
-  static Future<FlumpLibrary> load(String url) {
+  static Future<FlumpLibrary> load(String url)  async {
 
-    return HttpRequest.getString(url).then(JSON.decode).then((jsonFlump) {
+    var json = await HttpRequest.getString(url);
+    var jsonFlump = JSON.decode(json);
+    var textureGroupLoaders = new List();
+    var flumpLibrary = new FlumpLibrary();
 
-      var textureGroupLoaders = new List();
-      var flumpLibrary = new FlumpLibrary();
+    flumpLibrary._url = _ensureString(url);
+    flumpLibrary._md5 = _ensureString(jsonFlump["md5"]);
+    flumpLibrary._frameRate = _ensureInt(jsonFlump["frameRate"]);
 
-      flumpLibrary._url = _ensureString(url);
-      flumpLibrary._md5 = _ensureString(jsonFlump["md5"]);
-      flumpLibrary._frameRate = _ensureInt(jsonFlump["frameRate"]);
+    for(var jsonMovie in jsonFlump["movies"] as List) {
+      var flumpMovieData = new _FlumpMovieData(flumpLibrary, jsonMovie);
+      flumpLibrary._movieDatas.add(flumpMovieData);
+    }
 
-      for(var jsonMovie in jsonFlump["movies"] as List) {
-        var flumpMovieData = new _FlumpMovieData(flumpLibrary, jsonMovie);
-        flumpLibrary._movieDatas.add(flumpMovieData);
-      }
+    for(var jsonTextureGroup in jsonFlump["textureGroups"] as List) {
+      var future = _FlumpTextureGroup.load(flumpLibrary, jsonTextureGroup);
+      textureGroupLoaders.add(future);
+    }
 
-      for(var jsonTextureGroup in jsonFlump["textureGroups"] as List) {
-        var future = _FlumpTextureGroup.load(flumpLibrary, jsonTextureGroup);
-        textureGroupLoaders.add(future);
-      }
-
-      return Future.wait(textureGroupLoaders).then((textureGroups) {
-        flumpLibrary._textureGroups.addAll(textureGroups);
-        return flumpLibrary;
-      });
-    });
+    var textureGroups = await Future.wait(textureGroupLoaders);
+    flumpLibrary._textureGroups.addAll(textureGroups);
+    return flumpLibrary;
   }
 
-  //-----------------------------------------------------------------------------------------------
+  //---------------------------------------------------------------------------
+
+  String get url => _url;
+  String get md5 => _md5;
+  int get frameRate => _frameRate;
+
+  //---------------------------------------------------------------------------
 
   _FlumpMovieData _getFlumpMovieData(String name) {
 
