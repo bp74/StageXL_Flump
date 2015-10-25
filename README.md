@@ -21,4 +21,4 @@ Here is the little demo showing a Flash animation converted into a texture atlas
 
 ## Build
 
-[![Build Status](https://drone.io/github.com/bp74/StageXL_Flump/status.png)](https://drone.io/github.com/bp74/StageXL_Flump/latest)
+[![Build Status](https://travis-ci.org/bp74/StageXL_Flump.svg?branch=master)](https://travis-ci.org/bp74/StageXL_Flump)
