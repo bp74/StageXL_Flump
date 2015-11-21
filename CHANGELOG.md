@@ -3,6 +3,9 @@
 This file contains highlights of what changes on each version of the StageXL_Flump
 package. This file is normally updated whenever we push a new version to pub.
 
+#### Pub version 0.3.5
+  * Updated to StageXL 0.13.0
+  
 #### Pub version 0.3.4
   * Updated to StageXL 0.12.0
   
