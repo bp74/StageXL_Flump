@@ -4,7 +4,7 @@ The StageXL Flump library is an extension to the StageXL Library to play Flump a
 
 Flump converts Flash keyframe animations into texture atlases and JSON that can be easily integrated in StageXL based games and applications. Please visit the homepage of Flump for more details.  
 
-* Flump homepage: <http://threerings.github.io/flump/>
+* Flump homepage: <http://tconkling.github.io/flump/>
 
 ## StageXL
 
