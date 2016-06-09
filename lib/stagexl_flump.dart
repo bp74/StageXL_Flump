@@ -3,7 +3,7 @@ library stagexl_flump;
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math' hide Point, Rectangle;
-import 'dart:html' show ImageElement, HttpRequest;
+import 'dart:html' show HttpRequest;
 import 'package:stagexl/stagexl.dart';
 
 // Flump converts Flash keyframe animations into texture atlases and JSON.
