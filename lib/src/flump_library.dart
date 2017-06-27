@@ -13,7 +13,7 @@ class FlumpLibrary {
 
     var json = await HttpRequest.getString(url);
     var jsonFlump = JSON.decode(json);
-    var textureGroupLoaders = new List();
+    var textureGroupLoaders = new List<Future<_FlumpTextureGroup>>();
     var flumpLibrary = new FlumpLibrary();
 
     flumpLibrary._url = _ensureString(url);
@@ -30,7 +30,7 @@ class FlumpLibrary {
       textureGroupLoaders.add(future);
     }
 
-    var textureGroups = await Future.wait(textureGroupLoaders);
+    List<_FlumpTextureGroup> textureGroups = await Future.wait(textureGroupLoaders);
     flumpLibrary._textureGroups.addAll(textureGroups);
     return flumpLibrary;
   }
