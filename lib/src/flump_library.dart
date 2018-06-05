@@ -11,8 +11,8 @@ class FlumpLibrary {
 
   static Future<FlumpLibrary> load(String url)  async {
 
-    var json = await HttpRequest.getString(url);
-    var jsonFlump = JSON.decode(json);
+    var jsonString = await HttpRequest.getString(url);
+    var jsonFlump = json.decode(jsonString);
     var textureGroupLoaders = new List<Future<_FlumpTextureGroup>>();
     var flumpLibrary = new FlumpLibrary();
 
