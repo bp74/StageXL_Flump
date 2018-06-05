@@ -9,7 +9,7 @@ class _FlumpTextureGroup {
 
   static Future<_FlumpTextureGroup> load(FlumpLibrary flumpLibrary, Map json) {
 
-    var loaders = json["atlases"].map((jsonAtlas) =>
+    var loaders = (json["atlases"] as List).map((jsonAtlas) =>
         _FlumpTextureGroupAtlas.load(flumpLibrary, jsonAtlas));
 
     return Future.wait(loaders).then((atlases) {
