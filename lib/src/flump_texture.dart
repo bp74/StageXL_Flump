@@ -17,9 +17,9 @@ class _FlumpTexture implements BitmapDrawable {
 
     _originX = originX;
     _originY = originY;
-    _renderTextureQuad = new RenderTextureQuad(renderTexture,
-        new Rectangle<int>(textureX, textureY, textureWidth, textureHeight),
-        new Rectangle<int>(0, 0, textureWidth, textureHeight), 0, 1.0);
+    _renderTextureQuad = RenderTextureQuad(renderTexture,
+        Rectangle<int>(textureX, textureY, textureWidth, textureHeight),
+        Rectangle<int>(0, 0, textureWidth, textureHeight), 0, 1.0);
   }
 
   num get originX => _originX;

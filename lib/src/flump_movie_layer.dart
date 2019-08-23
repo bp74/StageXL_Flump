@@ -6,8 +6,8 @@ class _FlumpMovieLayer extends DisplayObject implements Animatable {
   final _FlumpLayerData flumpLayerData;
 
   BitmapDrawable _symbol;
-  Map<String, BitmapDrawable> _symbols = new Map<String, BitmapDrawable>();
-  Matrix _transformationMatrix = new Matrix.fromIdentity();
+  Map<String, BitmapDrawable> _symbols = Map<String, BitmapDrawable>();
+  Matrix _transformationMatrix = Matrix.fromIdentity();
 
   _FlumpMovieLayer(FlumpLibrary flumpLibrary, _FlumpLayerData flumpLayerData) :
     this.flumpLibrary = flumpLibrary,

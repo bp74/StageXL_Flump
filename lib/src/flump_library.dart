@@ -2,8 +2,8 @@ part of stagexl_flump;
 
 class FlumpLibrary {
 
-  final List<_FlumpMovieData> _movieDatas = new List<_FlumpMovieData>();
-  final List<_FlumpTextureGroup> _textureGroups = new List<_FlumpTextureGroup>();
+  final List<_FlumpMovieData> _movieDatas = List<_FlumpMovieData>();
+  final List<_FlumpTextureGroup> _textureGroups = List<_FlumpTextureGroup>();
 
   String _url;
   String _md5;
@@ -13,15 +13,15 @@ class FlumpLibrary {
 
     var jsonString = await HttpRequest.getString(url);
     var jsonFlump = json.decode(jsonString);
-    var textureGroupLoaders = new List<Future<_FlumpTextureGroup>>();
-    var flumpLibrary = new FlumpLibrary();
+    var textureGroupLoaders = List<Future<_FlumpTextureGroup>>();
+    var flumpLibrary = FlumpLibrary();
 
     flumpLibrary._url = _ensureString(url);
     flumpLibrary._md5 = _ensureString(jsonFlump["md5"]);
     flumpLibrary._frameRate = _ensureInt(jsonFlump["frameRate"]);
 
     for(var jsonMovie in jsonFlump["movies"] as List) {
-      var flumpMovieData = new _FlumpMovieData(flumpLibrary, jsonMovie);
+      var flumpMovieData = _FlumpMovieData(flumpLibrary, jsonMovie);
       flumpLibrary._movieDatas.add(flumpMovieData);
     }
 
@@ -50,7 +50,7 @@ class FlumpLibrary {
       if (movieData.id == name) return movieData;
     }
 
-    throw new ArgumentError("The movie '$name' is not available.");
+    throw ArgumentError("The movie '$name' is not available.");
   }
 
   BitmapDrawable _createSymbol(String name) {
@@ -62,9 +62,9 @@ class FlumpLibrary {
 
     for(int i = 0; i < _movieDatas.length; i++) {
       var movieData = _movieDatas[i];
-      if (movieData.id == name) return new FlumpMovie(this, name);
+      if (movieData.id == name) return FlumpMovie(this, name);
     }
 
-    throw new ArgumentError("The symbol '$name' is not available.");
+    throw ArgumentError("The symbol '$name' is not available.");
   }
 }

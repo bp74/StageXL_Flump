@@ -11,7 +11,7 @@ class _FlumpMovieData {
   _FlumpMovieData(FlumpLibrary flumpLibrary, Map json) :
     this.flumpLibrary = flumpLibrary,
     this.id = json["id"],
-    this.flumpLayerDatas = (json["layers"] as List).map((layer) => new _FlumpLayerData(layer)).toList() {
+    this.flumpLayerDatas = (json["layers"] as List).map((layer) => _FlumpLayerData(layer)).toList() {
 
     this.frames = flumpLayerDatas.fold(0, (f, data) => max(f, data.frames));
   }

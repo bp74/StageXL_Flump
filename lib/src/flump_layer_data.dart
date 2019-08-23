@@ -12,7 +12,7 @@ class _FlumpLayerData {
     this.name = _ensureString(json["name"]),
     this.flipbook = json.containsKey("flipbook") ? _ensureBool(json["flipbook"]) : false,
     this.flumpKeyframeDatas = (json["keyframes"] as List).map((keyframe) =>
-        new _FlumpKeyframeData(keyframe)).toList() {
+        _FlumpKeyframeData(keyframe)).toList() {
 
     this.frames = flumpKeyframeDatas.last.index + flumpKeyframeDatas.last.duration;
   }

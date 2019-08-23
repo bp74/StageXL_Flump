@@ -13,9 +13,9 @@ class _FlumpTextureGroup {
         _FlumpTextureGroupAtlas.load(flumpLibrary, jsonAtlas));
 
     return Future.wait(loaders).then((atlases) {
-      var flumpTextures = new Map<String, _FlumpTexture>();
+      var flumpTextures = Map<String, _FlumpTexture>();
       atlases.forEach((atlas) => flumpTextures.addAll(atlas.flumpTextures));
-      return new _FlumpTextureGroup(atlases, flumpTextures);
+      return _FlumpTextureGroup(atlases, flumpTextures);
     });
   }
 }

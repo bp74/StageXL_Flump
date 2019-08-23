@@ -4,7 +4,7 @@ class FlumpMovie extends DisplayObject implements Animatable {
 
   final FlumpLibrary _flumpLibrary;
   final _FlumpMovieData _flumpMovieData;
-  final List<_FlumpMovieLayer> _flumpMovieLayers = new List<_FlumpMovieLayer>();
+  final List<_FlumpMovieLayer> _flumpMovieLayers = List<_FlumpMovieLayer>();
 
   num _time = 0.0;
   num _duration = 0.0;
@@ -18,7 +18,7 @@ class FlumpMovie extends DisplayObject implements Animatable {
     _flumpMovieData = flumpLibrary._getFlumpMovieData(name) {
 
     for(var flumpLayerData in _flumpMovieData.flumpLayerDatas) {
-      var flashMovieLayer = new _FlumpMovieLayer(_flumpLibrary, flumpLayerData);
+      var flashMovieLayer = _FlumpMovieLayer(_flumpLibrary, flumpLayerData);
       _flumpMovieLayers.add(flashMovieLayer);
     }
 

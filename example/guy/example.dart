@@ -14,8 +14,8 @@ Future main() async {
   // init Stage and RenderLoop
 
   var canvas = html.querySelector('#stage');
-  var stage = new Stage(canvas, width: 800, height: 600);
-  var renderLoop = new RenderLoop();
+  var stage = Stage(canvas, width: 800, height: 600);
+  var renderLoop = RenderLoop();
   renderLoop.addStage(stage);
 
   // load the FlumpLibrary
@@ -24,25 +24,25 @@ Future main() async {
 
   // create FlumpMovies from the FlumpLibrary
 
-  var idle = new FlumpMovie(flumpLibrary, 'idle');
+  var idle = FlumpMovie(flumpLibrary, 'idle');
   idle.x = 150;
   idle.y = 350;
   stage.addChild(idle);
   stage.juggler.add(idle);
 
-  var walk = new FlumpMovie(flumpLibrary, 'walk');
+  var walk = FlumpMovie(flumpLibrary, 'walk');
   walk.x = 400;
   walk.y = 250;
   stage.addChild(walk);
   stage.juggler.add(walk);
 
-  var attack = new FlumpMovie(flumpLibrary, 'attack');
+  var attack = FlumpMovie(flumpLibrary, 'attack');
   attack.x = 650;
   attack.y = 350;
   stage.addChild(attack);
   stage.juggler.add(attack);
 
-  var defeat = new FlumpMovie(flumpLibrary, 'defeat');
+  var defeat = FlumpMovie(flumpLibrary, 'defeat');
   defeat.x = 400;
   defeat.y = 500;
   stage.addChild(defeat);
