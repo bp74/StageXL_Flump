@@ -1,25 +1,26 @@
 part of stagexl_flump;
 
 class _FlumpTexture implements BitmapDrawable {
-
   RenderTextureQuad _renderTextureQuad;
   num _originX;
   num _originY;
 
   _FlumpTexture(RenderTexture renderTexture, Map json) {
-
-    num originX = _ensureNum(json["origin"][0]);
-    num originY = _ensureNum(json["origin"][1]);
-    int textureX = _ensureInt(json["rect"][0]);
-    int textureY = _ensureInt(json["rect"][1]);
-    int textureWidth = _ensureInt(json["rect"][2]);
-    int textureHeight = _ensureInt(json["rect"][3]);
+    var originX = _ensureNum(json['origin'][0]);
+    var originY = _ensureNum(json['origin'][1]);
+    var textureX = _ensureInt(json['rect'][0]);
+    var textureY = _ensureInt(json['rect'][1]);
+    var textureWidth = _ensureInt(json['rect'][2]);
+    var textureHeight = _ensureInt(json['rect'][3]);
 
     _originX = originX;
     _originY = originY;
-    _renderTextureQuad = RenderTextureQuad(renderTexture,
+    _renderTextureQuad = RenderTextureQuad(
+        renderTexture,
         Rectangle<int>(textureX, textureY, textureWidth, textureHeight),
-        Rectangle<int>(0, 0, textureWidth, textureHeight), 0, 1.0);
+        Rectangle<int>(0, 0, textureWidth, textureHeight),
+        0,
+        1.0);
   }
 
   num get originX => _originX;
@@ -27,7 +28,8 @@ class _FlumpTexture implements BitmapDrawable {
 
   RenderTextureQuad get renderTextureQuad => _renderTextureQuad;
 
+  @override
   void render(RenderState renderState) {
-    renderState.renderTextureQuad(this.renderTextureQuad);
+    renderState.renderTextureQuad(renderTextureQuad);
   }
 }

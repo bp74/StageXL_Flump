@@ -1,36 +1,34 @@
 part of stagexl_flump;
 
 class FlumpLibrary {
-
-  final List<_FlumpMovieData> _movieDatas = List<_FlumpMovieData>();
-  final List<_FlumpTextureGroup> _textureGroups = List<_FlumpTextureGroup>();
+  final List<_FlumpMovieData> _movieDatas = <_FlumpMovieData>[];
+  final List<_FlumpTextureGroup> _textureGroups = <_FlumpTextureGroup>[];
 
   String _url;
   String _md5;
   int _frameRate;
 
-  static Future<FlumpLibrary> load(String url)  async {
-
+  static Future<FlumpLibrary> load(String url) async {
     var jsonString = await HttpRequest.getString(url);
     var jsonFlump = json.decode(jsonString);
-    var textureGroupLoaders = List<Future<_FlumpTextureGroup>>();
+    var textureGroupLoaders = <Future<_FlumpTextureGroup>>[];
     var flumpLibrary = FlumpLibrary();
 
     flumpLibrary._url = _ensureString(url);
-    flumpLibrary._md5 = _ensureString(jsonFlump["md5"]);
-    flumpLibrary._frameRate = _ensureInt(jsonFlump["frameRate"]);
+    flumpLibrary._md5 = _ensureString(jsonFlump['md5']);
+    flumpLibrary._frameRate = _ensureInt(jsonFlump['frameRate']);
 
-    for(var jsonMovie in jsonFlump["movies"] as List) {
+    for (var jsonMovie in jsonFlump['movies'] as List) {
       var flumpMovieData = _FlumpMovieData(flumpLibrary, jsonMovie);
       flumpLibrary._movieDatas.add(flumpMovieData);
     }
 
-    for(var jsonTextureGroup in jsonFlump["textureGroups"] as List) {
+    for (var jsonTextureGroup in jsonFlump['textureGroups'] as List) {
       var future = _FlumpTextureGroup.load(flumpLibrary, jsonTextureGroup);
       textureGroupLoaders.add(future);
     }
 
-    List<_FlumpTextureGroup> textureGroups = await Future.wait(textureGroupLoaders);
+    var textureGroups = await Future.wait(textureGroupLoaders);
     flumpLibrary._textureGroups.addAll(textureGroups);
     return flumpLibrary;
   }
@@ -44,8 +42,7 @@ class FlumpLibrary {
   //---------------------------------------------------------------------------
 
   _FlumpMovieData _getFlumpMovieData(String name) {
-
-    for(int i = 0; i < _movieDatas.length; i++) {
+    for (var i = 0; i < _movieDatas.length; i++) {
       var movieData = _movieDatas[i];
       if (movieData.id == name) return movieData;
     }
@@ -54,13 +51,12 @@ class FlumpLibrary {
   }
 
   BitmapDrawable _createSymbol(String name) {
-
-    for(int i = 0; i < _textureGroups.length; i++) {
+    for (var i = 0; i < _textureGroups.length; i++) {
       var flumpTextures = _textureGroups[i].flumpTextures;
       if (flumpTextures.containsKey(name)) return flumpTextures[name];
     }
 
-    for(int i = 0; i < _movieDatas.length; i++) {
+    for (var i = 0; i < _movieDatas.length; i++) {
       var movieData = _movieDatas[i];
       if (movieData.id == name) return FlumpMovie(this, name);
     }
